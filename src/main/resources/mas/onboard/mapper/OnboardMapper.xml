@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mas.onboard.mapper.OnboardMapper">
+
+	<resultMap id="onboard" type="mas.onboard.dto.Onboard">
+		<id column="OB_ID" property="submissionId" jdbcType="DECIMAL" />
+		<result column="OB_OFFICER_ACCT_ID" property="officerAcctId" jdbcType="VARCHAR" />
+		<result column="OB_FIRST_NAME" property="firstName" jdbcType="VARCHAR" />
+		<result column="OB_MIDDLE_NAME" property="middleName" jdbcType="VARCHAR" />
+		<result column="OB_LAST_NAME" property="lastName" jdbcType="VARCHAR" />
+		<result column="OB_STATUS" property="status" jdbcType="VARCHAR" />
+		<collection property="docs" resultMap="mas.onboard.dto.Doc"/>
+	</resultMap>
+	
+	<resultMap id="doc" type="mas.onboard.dto.Doc">
+		<id column="DOC_ID" property="id" jdbcType="DECIMAL" />
+		<id column="DOC_OB_ACCT_ID" property="obAcctId" jdbcType="DECIMAL" />
+		<id column="DOC_NAME" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="onboardColumns">
+		OB.ID AS OB_ID,
+		OB.OFFICER_ACCT_ID AS OB_OFFICER_ACCT_ID,
+		OB.OB_ACCT_CODE AS OB_ACCT_CODE,
+		OB.FIRST_NAME AS OB_FIRST_NAME,
+		OB.MIDDLE_NAME AS OB_MIDDLE_NAME,
+		OB.LAST_NAME AS OB_LAST_NAME,
+	</sql>
+	
+	<sql id="docColumns">
+		DOC.ID AS DOC_ID,
+		DOC.OB_ACCT_ID AS DOC_OB_ACCT_ID,
+		DOC.DOC_CODE AS DOC_CODE,
+	</sql>
+	
+	<select id="getExistingOnboard" resultMap="onboard">
+		SELECT 
+		  	<trim suffixOverrides=",">
+				  <include refid="onboardColumns" />
+				  <include refid="docColumns" />
+			</trim>
+	  	FROM txn_onboard_acct OB 
+	  	LEFT JOIN txn_onboard_file DOC ON DOC.OB_ACCT_ID = OB.ID
+	  	WHERE 
+			#{search.officerAcctId,jdbcType=VARCHAR} IS NULL 
+	  	<if test="search.officerAcctId != null">
+			OR OB.OFFICER_ACCT_ID = #{search.officerAcctId,jdbcType=VARCHAR}
+		</if> 
+	  	<if test="search.submissionId != null">
+			AND OB.ID = #{search.submissionId,jdbcType=VARCHAR}
+		</if>
+	  	<if test="search.firstName != null">
+			AND OB.FIRST_NAME = #{search.firstName,jdbcType=VARCHAR}
+		</if>
+	  	<if test="search.middleName != null">
+			AND OB.MIDDLE_NAME = #{search.middleName,jdbcType=VARCHAR}
+		</if>
+	  	<if test="search.lastName != null">
+			AND OB.LAST_NAME = #{search.lastName,jdbcType=VARCHAR}
+		</if>
+	  	<if test="search.status != null">
+			AND OB.STATUS = #{search.status,jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+</mapper>

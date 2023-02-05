@@ -1,0 +1,35 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /mas/onboard/v1
+  ssl:
+    enabled: false
+  error:
+    include-stacktrace: never
+spring:
+  application:
+    name: mas-onboard
+  datasource:
+    tomcat:
+      default-auto-commit: false
+      initial-size: 3
+      max-active: 100
+      max-age: 60000
+      test-on-borrow: true
+      test-while-idle: true
+    type: org.apache.tomcat.jdbc.pool.DataSource
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  profiles:
+    active: local
+springdoc:
+  api-docs:
+    enabled: true
+    resolve-schema-properties: true
+  swagger-ui:
+    disable-swagger-default-url: true
+    display-request-duration: true
+    doc-expansion: none
+    show-common-extensions: true
+    show-extensions: true

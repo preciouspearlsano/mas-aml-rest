@@ -1,0 +1,17 @@
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+          <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <typeAliases>
+        <typeAlias type="mas.onboard.dto.StatusRequestView" alias="statusRequestView"/>
+        <typeAlias type="mas.onboard.dto.Doc" alias="doc"/>
+        <typeAlias type="mas.onboard.dto.Onboard" alias="onboard"/>
+        <typeAlias type="mas.onboard.dto.Onboard" alias="onboard"/>
+    </typeAliases>
+    <mappers>
+        <mapper resource="mas/onboard/mapper/OnboardMapper.xml"/>
+    </mappers>
+</configuration>
