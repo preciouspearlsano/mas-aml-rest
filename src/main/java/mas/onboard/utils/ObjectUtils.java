@@ -1,4 +1,4 @@
-package mas.onboard.util;
+package mas.onboard.utils;
 
 /**
  * @author Precious Pearl A. Sano <pr3_cious_15@yahoo.com>

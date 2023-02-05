@@ -22,7 +22,7 @@ import mas.onboard.dto.StatusRequestView;
 import mas.onboard.dto.StatusSearchRequest;
 import mas.onboard.exception.OnboardException;
 import mas.onboard.services.OnboardService;
-import mas.onboard.util.ObjectUtils;
+import mas.onboard.utils.ObjectUtils;
 
 /**
  * @author Precious Pearl A. Sano Ventura <pr3_cious_15@yahoo.com>
