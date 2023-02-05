@@ -5,6 +5,8 @@
     </encoder>
   </appender>
 
+<logger name="mas.onboard.mapper.OnboardMapper" level="DEBUG"/>
+
   <root level="INFO">
     <appender-ref ref="STDOUT" />
   </root>

@@ -7,7 +7,8 @@ package mas.onboard.constant;
  */
 public enum OnboardErrorCode {
 
-	EXOB_NO_RECORD("No record found");
+	EXOB_NO_RECORD("No record found"), 
+	EXOB_INV_OWNER("Now owner of account");
 	
 	private final String message;
 	

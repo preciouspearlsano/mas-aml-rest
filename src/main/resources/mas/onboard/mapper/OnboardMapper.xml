@@ -3,25 +3,24 @@
 <mapper namespace="mas.onboard.mapper.OnboardMapper">
 
 	<resultMap id="onboard" type="mas.onboard.dto.Onboard">
-		<id column="OB_ID" property="submissionId" jdbcType="DECIMAL" />
+		<id column="OB_ID" property="submissionId" jdbcType="VARCHAR" />
 		<result column="OB_OFFICER_ACCT_ID" property="officerAcctId" jdbcType="VARCHAR" />
 		<result column="OB_FIRST_NAME" property="firstName" jdbcType="VARCHAR" />
 		<result column="OB_MIDDLE_NAME" property="middleName" jdbcType="VARCHAR" />
 		<result column="OB_LAST_NAME" property="lastName" jdbcType="VARCHAR" />
 		<result column="OB_STATUS" property="status" jdbcType="VARCHAR" />
-		<collection property="docs" resultMap="mas.onboard.dto.Doc"/>
+		<collection property="docs" javaType="java.util.Collection" column="DOC_OB_ACCT_ID" ofType="mas.onboard.dto.Doc"/>
 	</resultMap>
 	
 	<resultMap id="doc" type="mas.onboard.dto.Doc">
-		<id column="DOC_ID" property="id" jdbcType="DECIMAL" />
-		<id column="DOC_OB_ACCT_ID" property="obAcctId" jdbcType="DECIMAL" />
-		<id column="DOC_NAME" property="name" jdbcType="VARCHAR" />
+		<id column="DOC_OB_ACCT_ID" property="obAcctId" jdbcType="VARCHAR" />
+		<result column="DOC_ID" property="id" jdbcType="VARCHAR" />
+		<result column="DOC_CODE" property="name" jdbcType="VARCHAR" />
 	</resultMap>
 	
 	<sql id="onboardColumns">
 		OB.ID AS OB_ID,
 		OB.OFFICER_ACCT_ID AS OB_OFFICER_ACCT_ID,
-		OB.OB_ACCT_CODE AS OB_ACCT_CODE,
 		OB.FIRST_NAME AS OB_FIRST_NAME,
 		OB.MIDDLE_NAME AS OB_MIDDLE_NAME,
 		OB.LAST_NAME AS OB_LAST_NAME,
@@ -33,34 +32,97 @@
 		DOC.DOC_CODE AS DOC_CODE,
 	</sql>
 	
+	
+	<select id="getExistingOnboardDoc" resultMap="doc">
+		SELECT 
+		  	<trim suffixOverrides=",">
+				  <include refid="docColumns" />
+			</trim>
+	  	FROM txn_onboard_file DOC 
+	  	WHERE DOC.OB_ACCT_ID = #{submissionId,jdbcType=VARCHAR}
+	</select>
+	
+	
 	<select id="getExistingOnboard" resultMap="onboard">
 		SELECT 
 		  	<trim suffixOverrides=",">
 				  <include refid="onboardColumns" />
-				  <include refid="docColumns" />
 			</trim>
 	  	FROM txn_onboard_acct OB 
-	  	LEFT JOIN txn_onboard_file DOC ON DOC.OB_ACCT_ID = OB.ID
 	  	WHERE 
-			#{search.officerAcctId,jdbcType=VARCHAR} IS NULL 
-	  	<if test="search.officerAcctId != null">
-			OR OB.OFFICER_ACCT_ID = #{search.officerAcctId,jdbcType=VARCHAR}
+			#{officerAcctId,jdbcType=VARCHAR} IS NULL 
+	  	<if test="officerAcctId != null">
+			OR OB.OFFICER_ACCT_ID = #{officerAcctId,jdbcType=VARCHAR}
 		</if> 
-	  	<if test="search.submissionId != null">
-			AND OB.ID = #{search.submissionId,jdbcType=VARCHAR}
+	  	<if test="submissionId != null">
+			AND OB.ID = #{submissionId,jdbcType=VARCHAR}
 		</if>
-	  	<if test="search.firstName != null">
-			AND OB.FIRST_NAME = #{search.firstName,jdbcType=VARCHAR}
+	  	<if test="firstName != null">
+			AND OB.FIRST_NAME = #{firstName,jdbcType=VARCHAR}
 		</if>
-	  	<if test="search.middleName != null">
-			AND OB.MIDDLE_NAME = #{search.middleName,jdbcType=VARCHAR}
+	  	<if test="middleName != null">
+			AND OB.MIDDLE_NAME = #{middleName,jdbcType=VARCHAR}
 		</if>
-	  	<if test="search.lastName != null">
-			AND OB.LAST_NAME = #{search.lastName,jdbcType=VARCHAR}
+	  	<if test="lastName != null">
+			AND OB.LAST_NAME = #{lastName,jdbcType=VARCHAR}
 		</if>
-	  	<if test="search.status != null">
-			AND OB.STATUS = #{search.status,jdbcType=VARCHAR}
+	  	<if test="status != null">
+			AND OB.STATUS = #{status,jdbcType=VARCHAR}
 		</if>
+		FETCH FIRST 1 ROWS ONLY
 	</select>
+	
+	<update id="cancelOnboard">
+		UPDATE txn_onboard_acct OB SET OB.STATUS = 'CANCELLED' 
+		WHERE OB.ID = #{submissionId}
+		AND OB.OFFICER_ACCT_ID = #{officerAcctId}
+	</update>
+	
+	
+	<insert id="createOnboard" parameterType="mas.onboard.dto.Onboard" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO txn_onboard_acct (
+			ID,
+			OFFICER_ACCT_ID,
+			FIRST_NAME,
+			MIDDLE_NAME,
+			LAST_NAME,
+			STATUS
+		) VALUES (
+			#{id,jdbcType=VARCHAR},
+			#{officerAcctId,jdbcType=VARCHAR},
+			#{firstName,jdbcType=VARCHAR},
+			#{middleName,jdbcType=VARCHAR},
+			#{lastName,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+		)
+	</insert>
+	
+	
+	<insert id="createOnboardDoc" parameterType="mas.onboard.dto.Doc" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO txn_onboard_file (
+			ID,
+			OB_ACCT_ID,
+			DOC_CODE
+		) VALUES (
+			SYS_GUID(),
+			#{obAcctId,jdbcType=VARCHAR},
+			#{name,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="updateOnboard">
+		UPDATE txn_onboard_acct OB 
+		SET OB.FIRST_NAME = #{firstName},
+			 OB.MIDDLE_NAME = #{middleName},
+			 OB.LAST_NAME = #{lastName}
+		WHERE OB.OFFICER_ACCT_ID = #{officerAcctId}
+		AND OB.ID = #{submissionId}
+	</update>
+	
+	<update id="deleteOnboardDoc">
+		DELETE FROM txn_onboard_acct DOC
+		WHERE DOC.OFFICER_ACCT_ID = #{officerAcctId}
+		AND DOC.OB_ACCT_ID = #{submissionId}
+	</update>
 	
 </mapper>

@@ -33,3 +33,5 @@ springdoc:
     doc-expansion: none
     show-common-extensions: true
     show-extensions: true
+  mybatis:
+    config-location=classpath: /mas/onboarding/mapper/mybatis-config.xml

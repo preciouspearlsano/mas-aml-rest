@@ -12,6 +12,5 @@ import lombok.Data;
 @Data
 public class OnboardSubmit {
 	private String submissionId;
-	private String timesheetCode;
 	private Date creationDate;
 }

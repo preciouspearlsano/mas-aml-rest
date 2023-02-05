@@ -9,7 +9,8 @@
         <typeAlias type="mas.onboard.dto.StatusRequestView" alias="statusRequestView"/>
         <typeAlias type="mas.onboard.dto.Doc" alias="doc"/>
         <typeAlias type="mas.onboard.dto.Onboard" alias="onboard"/>
-        <typeAlias type="mas.onboard.dto.Onboard" alias="onboard"/>
+        <typeAlias type="mas.onboard.dto.TxnOnboard" alias="txOb"/>
+        <typeAlias type="mas.onboard.dto.StatusRequest" alias="statusRequest"/>
     </typeAliases>
     <mappers>
         <mapper resource="mas/onboard/mapper/OnboardMapper.xml"/>
