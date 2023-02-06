@@ -1,0 +1,215 @@
+{
+	"info": {
+		"_postman_id": "b4e3e4d5-68dc-4198-be5d-2858123f40da",
+		"name": "Sujith Task 1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ONBOARD-LIST",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-login-id",
+						"value": "officer1",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:8090/mas/onboard/v1/external/onboard-list",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"mas",
+						"onboard",
+						"v1",
+						"external",
+						"onboard-list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ONBOARD-LOAD",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-login-id",
+						"value": "officer1",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:8090/mas/onboard/v1/external/onboard-load/123",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"mas",
+						"onboard",
+						"v1",
+						"external",
+						"onboard-load",
+						"123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ONBOARD-LOAD-CANCEL",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-api-login-id",
+						"value": "officer1",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:8090/mas/onboard/v1/external/onboard-load/123abc/cancel",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"mas",
+						"onboard",
+						"v1",
+						"external",
+						"onboard-load",
+						"123abc",
+						"cancel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ONBOARD-SUBMISSION",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-login-id",
+						"value": "officer1",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"officerId\": \"123\",\r\n    \"onboards\": [\r\n        {\r\n            \"submissionId\": null,\r\n            \"officerAcctId\": null,\r\n            \"accountNo\": null,\r\n            \"firstName\": \"firstName Test\",\r\n            \"middleName\": \"middleName test\",\r\n            \"lastName\": \"lastName test\",\r\n            \"status\": null,\r\n            \"docs\": [\r\n                {\r\n                    \"id\": null,\r\n                    \"obAcctId\": null,\r\n                    \"name\": \"nbi\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/mas/onboard/v1/external/onboard-load/submission",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"mas",
+						"onboard",
+						"v1",
+						"external",
+						"onboard-load",
+						"submission"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ONBOARD-SUBMISSION-PUT",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-api-login-id",
+						"value": "officer1",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:8090/mas/onboard/v1/external/onboard-load/{submissionId}/submission",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"mas",
+						"onboard",
+						"v1",
+						"external",
+						"onboard-load",
+						"{submissionId}",
+						"submission"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ONBOARD-STATUS",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-login-id",
+						"value": "officer1",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:8090/mas/onboard/v1/external/onboard-load/status?status&firstName&middlename&lastName&submissionId",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"mas",
+						"onboard",
+						"v1",
+						"external",
+						"onboard-load",
+						"status"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": null
+						},
+						{
+							"key": "firstName",
+							"value": null
+						},
+						{
+							"key": "middlename",
+							"value": null
+						},
+						{
+							"key": "lastName",
+							"value": null
+						},
+						{
+							"key": "submissionId",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

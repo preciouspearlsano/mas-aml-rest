@@ -150,7 +150,6 @@ public class OnboardService {
 				});
 
 				String submissionId = txnOb.getId();
-				
 				txnOb.setStatus(getStatus(status));
 				mapper.createOnboard(txnOb);
 				

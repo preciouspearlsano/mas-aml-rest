@@ -69,7 +69,6 @@
 	  	<if test="status != null">
 			AND OB.STATUS = #{status,jdbcType=VARCHAR}
 		</if>
-		FETCH FIRST 1 ROWS ONLY
 	</select>
 	
 	<update id="cancelOnboard">
